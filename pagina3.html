@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Régimen de Faltas SENA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --sena-green: #004d26;
+      --sena-light-green: #008040;
+      --accent-blue: #1a73e8;
+      --light-gray: #f8f9fa;
+      --dark-gray: #333;
+      --white: #fff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--light-gray);
+      color: var(--dark-gray);
+      line-height: 1.6;
+    }
+    
+    /* Barra superior */
+    .top-nav {
+      background-color: var(--sena-green);
+      color: var(--white);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .top-nav h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    
+    .menu-toggle {
+      cursor: pointer;
+      font-size: 1.8rem;
+      transition: var(--transition);
+    }
+    
+    .menu-toggle:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Barra lateral */
+    .main-nav {
+      width: 300px;
+      background-color: var(--sena-light-green);
+      padding: 25px;
+      height: calc(100vh - 70px);
+      position: fixed;
+      top: 70px;
+      left: 0;
+      overflow-y: auto;
+      transition: transform 0.4s ease;
+      z-index: 900;
+    }
+    
+    .main-nav h2 {
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+    }
+    
+    .main-nav h2 i {
+      margin-right: 12px;
+    }
+    
+    .main-nav ul {
+      list-style: none;
+    }
+    
+    .main-nav ul li {
+      margin-bottom: 12px;
+    }
+    
+    .main-nav ul li a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      display: block;
+      padding: 12px 18px;
+      border-radius: 8px;
+      transition: var(--transition);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      font-size: 1.05rem;
+    }
+    
+    .main-nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+    
+    .main-nav ul li a.active {
+      background-color: var(--white);
+      color: var(--sena-green);
+      font-weight: 600;
+      box-shadow: var(--shadow);
+    }
+    
+    .main-nav ul li a i {
+      margin-right: 12px;
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+    
+    /* Contenido principal */
+    .main-content {
+      margin-left: 300px;
+      margin-top: 70px;
+      padding: 40px;
+      transition: margin 0.4s ease;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeIn 0.8s ease;
+    }
+    
+    header h1 {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--sena-green);
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    
+    header p {
+      color: #555;
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    /* Artículos */
+    .article-section {
+      margin-bottom: 40px;
+      background: var(--white);
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: none;
+      animation: fadeInUp 0.6s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .article-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--sena-green), var(--sena-light-green));
+    }
+    
+    .article-section.active {
+      display: block;
+    }
+    
+    .article-section h2 {
+      color: var(--sena-green);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e0f2e9;
+      display: flex;
+      align-items: center;
+    }
+    
+    .article-section h2 i {
+      margin-right: 15px;
+      color: var(--sena-light-green);
+    }
+    
+    .article-section p {
+      margin-bottom: 20px;
+      text-align: justify;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    
+    /* Cuadros para listas con subtítulos */
+    .info-box {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      border-radius: 10px;
+      padding: 25px;
+      margin: 25px 0;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--accent-blue);
+      transition: var(--transition);
+    }
+    
+    .info-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+    
+    .info-box h3 {
+      color: var(--accent-blue);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .info-box h3 i {
+      margin-right: 10px;
+    }
+    
+    .info-box ul {
+      margin-bottom: 0;
+      padding-left: 20px;
+    }
+    
+    .info-box li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 25px;
+      line-height: 1.6;
+    }
+    
+    .info-box li::before {
+      content: '•';
+      color: var(--accent-blue);
+      font-weight: bold;
+      font-size: 1.4rem;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+    
+    .info-box strong {
+      color: var(--sena-green);
+    }
+    
+    /* Ejemplos */
+    .ejemplo {
+      background-color: #e8f5e9;
+      border-left: 4px solid #43a047;
+      padding: 20px;
+      margin: 25px 0;
+      border-radius: 0 8px 8px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ejemplo::before {
+      content: 'EJEMPLO';
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #43a047;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-bottom-left-radius: 8px;
+    }
+    
+    .ejemplo p {
+      margin-bottom: 0;
+      font-style: italic;
+    }
+    
+    /* Sección de imágenes */
+    .image-section {
+      background-color: #e8f0fe;
+      border: 2px dashed var(--accent-blue);
+      border-radius: 12px;
+      padding: 30px;
+      margin: 30px 0;
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .image-section:hover {
+      background-color: #e1e8fa;
+    }
+    
+    .image-placeholder {
+      width: 100%;
+      height: 200px;
+      background-color: var(--accent-blue);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      margin: 15px 0;
+      opacity: 0.7;
+      transition: var(--transition);
+    }
+    
+    .image-placeholder:hover {
+      opacity: 1;
+      transform: scale(0.99);
+    }
+    
+    .image-section h3 {
+      color: var(--accent-blue);
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 0.95rem;
+      margin-top: 60px;
+      color: #666;
+      padding: 25px;
+      background-color: #f1f1f1;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    
+    /* Animaciones */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .main-nav {
+        width: 260px;
+      }
+      
+      .main-content {
+        margin-left: 260px;
+      }
+    }
+    
+    @media (max-width: 992px) {
+      .main-nav {
+        transform: translateX(-100%);
+        width: 280px;
+      }
+      
+      .main-nav.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 30px;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .top-nav {
+        padding: 12px 20px;
+      }
+      
+      .top-nav h1 {
+        font-size: 1.5rem;
+      }
+      
+      .main-content {
+        padding: 20px;
+      }
+      
+      .article-section {
+        padding: 25px;
+      }
+      
+      header h1 {
+        font-size: 1.8rem;
+      }
+      
+      header p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra superior -->
+  <div class="top-nav">
+    <div class="menu-toggle" onclick="toggleNav()">
+      <i class="fas fa-bars"></i>
+    </div>
+    <h1>Régimen de Faltas SENA</h1>
+    <div style="width: 24px;"></div>
+  </div>
+
+  <!-- Barra lateral -->
+  <nav class="main-nav">
+    <h2><i class="fas fa-book-open"></i> Artículos</h2>
+    <ul>
+      <li><a href="#art39" class="active" onclick="showArticle('art39')"><i class="fas fa-balance-scale"></i> Artículo 39</a></li>
+      <li><a href="#art40" onclick="showArticle('art40')"><i class="fas fa-clipboard-list"></i> Artículo 40</a></li>
+      <li><a href="#art41" onclick="showArticle('art41')"><i class="fas fa-exclamation-circle"></i> Artículo 41</a></li>
+      <li><a href="#art42" onclick="showArticle('art42')"><i class="fas fa-layer-group"></i> Artículo 42</a></li>
+      <li><a href="#art43" onclick="showArticle('art43')"><i class="fas fa-gavel"></i> Artículo 43</a></li>
+      <li><a href="#art44" onclick="showArticle('art44')"><i class="fas fa-filter"></i> Artículo 44</a></li>
+      <li><a href="#art45" onclick="showArticle('art45')"><i class="fas fa-graduation-cap"></i> Artículos 45-46</a></li>
+      <li><a href="#art47" onclick="showArticle('art47')"><i class="fas fa-ban"></i> Artículo 47</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <header>
+      <h1>Régimen de Faltas, Medidas Formativas y Sancionatorias</h1>
+      <p>Explicación detallada de los artículos 39 al 47 del Reglamento del Aprendiz SENA</p>
+    </header>
+
+    <!-- Artículo 39 -->
+    <section id="art39" class="article-section active">
+      <h2><i class="fas fa-balance-scale"></i> Artículo 39 - Principios de orientadores del regimen de faltas, medidas formativas, disiciplinarias y sancionatorias</h2>
+      <p>Este artículo establece los principios fundamentales que rigen el proceso disciplinario dentro del SENA, garantizando que cualquier proceso relacionado con faltas cometidas por aprendices se maneje con total respeto a sus derechos fundamentales y al debido proceso.</p>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-lock"></i> Principios Clave</h3>
+        <ul>
+          <li><strong>Confidencialidad:</strong> Toda información obtenida durante el proceso se mantiene en reserva. Los datos del aprendiz no deben divulgarse.</li>
+          <li><strong>Debido proceso:</strong> Derecho a ser notificado, presentar pruebas y defenderse antes de cualquier sanción.</li>
+          <li><strong>Culpabilidad:</strong> Solo se sanciona si se demuestra intención, culpa o negligencia comprobada.</li>
+          <li><strong>Prohibición de doble sanción:</strong> No se puede sancionar dos veces por el mismo hecho.</li>
+        </ul>
+      </div>
+      
+      <div class="ejemplo">
+        <p>Si un aprendiz fue absuelto por una acusación de copiar en un examen, no se puede abrir otro proceso por ese mismo examen, pues sería una doble sanción.</p>
+      </div>
+      
+    </section>
+
+    <!-- Artículo 40 -->
+    <section id="art40" class="article-section">
+      <h2><i class="fas fa-clipboard-list"></i> Artículo 40 - Las medidas disciplinarias, formativas, academicas y sancionatorias</h2>
+      <p>El SENA establece diferentes tipos de medidas que pueden aplicarse según la gravedad y naturaleza de la falta cometida por el aprendiz, priorizando siempre el enfoque formativo.</p>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-graduation-cap"></i> Medidas Formativas</h3>
+        <p>Buscan ayudar al aprendiz a mejorar su conducta sin imponer sanciones.</p>
+        <ul>
+          <li>Enfoque pedagógico y correctivo</li>
+          <li>Primera instancia para faltas leves</li>
+          <li>Buscan la reflexión y mejora</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-exclamation-triangle"></i> Medidas Disciplinarias</h3>
+        <p>Aplicadas por comportamientos indebidos que afectan la convivencia.</p>
+        <ul>
+          <li>Para comportamientos que afectan la convivencia</li>
+          <li>Pueden incluir llamados de atención formal</li>
+          <li>Requieren plan de mejoramiento</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-book"></i> Medidas Académicas</h3>
+        <p>Se relacionan con el incumplimiento en las actividades o compromisos académicos.</p>
+        <ul>
+          <li>Por incumplimiento de actividades académicas</li>
+          <li>Incluyen planes de nivelación</li>
+          <li>Pueden afectar la evaluación</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-ban"></i> Medidas Sancionatorias</h3>
+        <p>Son las más severas e incluyen condicionamiento o cancelación de matrícula</p>
+        <ul>
+          <li>Último recurso para faltas graves</li>
+          <li>Incluyen condicionamiento de matrícula</li>
+          <li>Pueden llevar a cancelación de matrícula</li>
+        </ul>
+      </div>
+      
+      <div class="ejemplo">
+        <p>Un aprendiz que llega reiteradamente tarde primero recibe un llamado de atención (formativo), luego un plan disciplinario, y si persiste, podría recibir una sanción académica.</p>
+      </div>
+    </section>
+
+    <!-- Artículo 41 -->
+    <section id="art41" class="article-section">
+      <h2><i class="fas fa-exclamation-circle"></i> Artículo 41 -Faltas</h2>
+      <p>Se considera falta cualquier comportamiento que afecte negativamente el proceso formativo, la convivencia institucional, las normas del centro de formación o el bienestar de la comunidad SENA.</p>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-book"></i> Faltas Académicas</h3>
+        <ul>
+          <li>No entregar trabajos o actividades</li>
+          <li>Copiar en evaluaciones (plagio)</li>
+          <li>Inasistencias injustificadas</li>
+          <li>Incumplimiento de plazos</li>
+          <li>Uso de materiales no permitidos</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-users"></i> Faltas Disciplinarias</h3>
+        <ul>
+          <li>Daño a bienes del SENA</li>
+          <li>Comportamiento agresivo</li>
+          <li>Incumplimiento del uniforme</li>
+          <li>Uso inadecuado de instalaciones</li>
+          <li>Falta de respeto a la comunidad</li>
+        </ul>
+      </div>
+      
+    </section>
+
+    <!-- Artículo 42 -->
+    <section id="art42" class="article-section">
+      <h2><i class="fas fa-layer-group"></i> Artículo 42 - definicion de la Clasificación de las faltas</h2>
+      <p>Las faltas se clasifican según su nivel de gravedad, lo que determina el tipo de medida o sanción aplicable en cada caso particular.</p>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-circle-notch"></i> Faltas Leves</h3>
+        <ul>
+          <li>No cumplir normas menores</li>
+          <li>Ej: Uso de gorra o celular en clase</li>
+          <li>Medidas: Llamados de atención verbales o escritos</li>
+          <li>Enfoque: Correctivo y formativo</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-exclamation"></i> Faltas Graves</h3>
+        <ul>
+          <li>Afectan la convivencia institucional</li>
+          <li>Ej: Falta de respeto a instructores</li>
+          <li>Medidas: Planes disciplinarios, suspensiones</li>
+          <li>Enfoque: Correctivo con consecuencias</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-skull-crossbones"></i> Faltas Gravísimas</h3>
+        <ul>
+          <li>Afectan derechos fundamentales</li>
+          <li>Ej: Violencia física, sustancias ilícitas</li>
+          <li>Medidas: Cancelación de matrícula</li>
+          <li>Enfoque: Sancionatorio y excluyente</li>
+        </ul>
+      </div>
+      
+      <div class="ejemplo">
+        <p>Comer en clase sin permiso sería falta leve, insultar a un compañero falta grave, y portar un arma en el centro falta gravísima.</p>
+      </div>
+    </section>
+
+    <!-- Artículo 43 -->
+    <section id="art43" class="article-section">
+      <h2><i class="fas fa-gavel"></i> Artículo 43 - Calificación de la falta</h2>
+      <p>Para determinar la gravedad de una falta no solo se considera el hecho en sí, sino también las circunstancias específicas que rodearon el evento y la intencionalidad del aprendiz.</p>
+      
+      <div class="info-box">
+  <h3><i class="fas fa-search-plus"></i> Factores que Agravan una Falta</h3>
+  <ul>
+    <li><strong>Reincidencia:</strong> Cometer la misma falta repetidamente demuestra falta de aprendizaje y empeora la situación.</li>
+    
+    <li><strong>Uso indebido de bienes comunes:</strong> Dañar o afectar recursos compartidos (computadores, salones, herramientas) perjudica a toda la comunidad.</li>
+    
+    <li><strong>Interés personal:</strong> Buscar beneficio propio (dinero, ventajas académicas) muestra intención egoísta y agrava la falta.</li>
+    
+    <li><strong>Discriminación:</strong> Actuar por prejuicios (racismo, machismo, homofobia) atenta contra la dignidad humana.</li>
+    
+    <li><strong>Medios peligrosos:</strong> Usar objetos o sustancias riesgosas (fuego, químicos) aumenta el peligro y la gravedad.</li>
+    
+    <li><strong>Obstrucción:</strong> Ocultar información o mentir durante la investigación perjudica la transparencia.</li>
+    
+    <li><strong>Intención de dañar:</strong> Tener el propósito claro de perjudicar a personas o instalaciones.</li>
+  </ul>
+</div>
+
+<div class="ejemplo">
+  <p><strong>Ejemplo comparativo:</strong> Romper un equipo por accidente y reportarlo sería leve, pero hacerlo a propósito para no trabajar y luego negarlo reúne varios factores agravantes (intención, obstrucción, posible reincidencia).</p>
+</div>
+    </section>
+
+    <!-- Artículo 44 -->
+    <section id="art44" class="article-section">
+      <h2><i class="fas fa-filter"></i> Artículo 44 - Criterios para calificar la falta</h2>
+      <p>Este artículo establece los criterios específicos que se deben considerar al momento de evaluar y calificar una falta, permitiendo una valoración justa y contextualizada.</p>
+      
+      <div class="info-box">
+  <h3><i class="fas fa-balance-scale"></i> Criterios Básicos de Evaluación</h3>
+  <ul>
+    <li><strong>Daños causados:</strong> Grado de afectación a personas, bienes o procesos</li>
+    <li><strong>Participación:</strong> ¿Fue autor o solo acompañante?</li>
+    <li><strong>Antecedentes:</strong> Historial disciplinario previo del aprendiz, ¿Ya había cometido otras faltas?</li>
+    <li><strong>Intención:</strong> ¿Fue planeado o un accidente?</li>
+    <li><strong>Reparación:</strong> Acciones concretas,  ¿Intentó corregir el daño?</li>
+  </ul>
+</div>
+
+<div class="info-box">
+  <h3><i class="fas fa-thumbs-up"></i> Factores Atenuantes</h3>
+  <ul>
+    <li><strong>Contexto:</strong> Circunstancias personales difíciles o situaciones externas que influyeron</li>
+    <li><strong>Reacción inmediata:</strong> Reconocimiento voluntario y espontáneo de la falta</li>
+    <li><strong>Colaboración:</strong> Actitud cooperativa durante el proceso investigativo</li>
+    <li><strong>Reparación efectiva:</strong> Compensación real del daño causado</li>
+  </ul>
+</div>
+
+<div class="info-box">
+  <h3><i class="fas fa-thumbs-down"></i> Factores Agravantes</h3>
+  <ul>
+    <li><strong>Impacto colectivo:</strong> Afectación a grupos o procesos formativos</li>
+    <li><strong>Premeditación:</strong> Planificación evidente de la falta</li>
+    <li><strong>Abuso de confianza:</strong> Violación de responsabilidades asignadas</li>
+    <li><strong>Reincidencia:</strong> Repetición de faltas similares</li>
+    <li><strong>Negativa a reparar:</strong> Falta de disposición para compensar daños</li>
+  </ul>
+</div>
+
+<div class="ejemplo">
+  <p><strong>Caso práctico:</strong> Un aprendiz que daña equipos durante una protesta pero que:
+  <br>- <strong>Atenuante:</strong> Se presenta voluntariamente a reconocer su participación
+  <br>- <strong>Agravante:</strong> Había recibido capacitación reciente sobre cuidado de equipos
+  <br>→ La sanción consideraría ambos aspectos proporcionalmente</p>
+</div>
+    </section>
+
+    <!-- Artículo 45 -->
+    <section id="art45" class="article-section">
+      <h2><i class="fas fa-graduation-cap"></i> Artículo 45 y 46 - Medidas formativas y tipos de medidas formativas</h2>
+      <p>Estas medidas tienen un carácter esencialmente pedagógico, buscando corregir y educar antes que sancionar, aplicándose principalmente en casos de faltas leves o como primera instancia.</p>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-book-reader"></i> Medidas Formativas Académicas</h3>
+        <ul>
+          <li><strong>Llamado de atención académico:</strong> Advertencia formal por escrito (máximo 2 por fase)</li>
+          <li><strong>Plan de mejoramiento académico:</strong> Estrategia personalizada con actividades y plazos</li>
+          <li><strong>Seguimiento especial:</strong> Acompañamiento cercano del instructor</li>
+          <li><strong>Nivelación:</strong> Actividades complementarias</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-user-shield"></i> Medidas Formativas Disciplinarias</h3>
+        <ul>
+          <li><strong>Llamado de atención disciplinario:</strong> Registro formal de la falta</li>
+          <li><strong>Plan disciplinario:</strong> Acuerdo firmado con compromisos</li>
+          <li><strong>Reflexión escrita:</strong> Análisis del comportamiento</li>
+          <li><strong>Talleres formativos:</strong> Sesiones de orientación</li>
+          <li><strong>Servicio comunitario:</strong> Actividades de reparación</li>
+        </ul>
+      </div>
+      
+      <div class="ejemplo">
+        <p>Para un aprendiz con bajo rendimiento: primero llamado de atención, luego plan de mejoramiento con tutorías, y si no mejora, medidas académicas más severas.</p>
+      </div>
+    </section>
+
+    <!-- Artículo 47 -->
+    <section id="art47" class="article-section">
+      <h2><i class="fas fa-ban"></i> Artículo 47 - Medidas sancionatorias</h2>
+      <p>Estas medidas representan la última instancia en el proceso formativo-disciplinario, aplicándose cuando las faltas son graves o gravísimas, o cuando no hubo mejora con las medidas formativas.</p>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-exclamation-triangle"></i> Condicionamiento de Matrícula</h3>
+        <ul>
+          <li><strong>Aplicación:</strong> Por reincidencia o faltas graves</li>
+          <li><strong>Duración:</strong> Mínimo 3 meses</li>
+          <li><strong>Límite:</strong> Máximo 2 condicionamientos</li>
+          <li><strong>Consecuencias:</strong> Pérdida de beneficios, seguimiento estricto</li>
+          <li><strong>Requisito:</strong> Firma de acta de compromiso</li>
+        </ul>
+      </div>
+      
+      <div class="info-box">
+        <h3><i class="fas fa-times-circle"></i> Cancelación de Matrícula</h3>
+        <ul>
+          <li><strong>Aplicación:</strong> Faltas gravísimas o incumplimiento de condicionamiento</li>
+          <li><strong>Proceso:</strong> Investigación exhaustiva, derecho a defensa</li>
+          <li><strong>Consecuencias:</strong> Pérdida de todos los derechos como aprendiz</li>
+          <li><strong>Reingreso:</strong> Restricciones temporales o permanentes</li>
+          <li><strong>Comunicación:</strong> Notificación formal por escrito</li>
+        </ul>
+      </div>
+      
+      
+      <div class="ejemplo">
+        <p>Un aprendiz que ha sido condicionado dos veces y reincide en faltas graves podría enfrentar cancelación de matrícula.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Elaborado para exposición por aprendices SENA | Régimen de Faltas 2024</p>
+      <p style="margin-top: 10px;"><i class="fas fa-info-circle"></i> Presentación interactiva - Todos los derechos reservados</p>
+    </footer>
+  </div>
+
+  <script>
+    // Mostrar/ocultar barra lateral en móviles
+    function toggleNav() {
+      document.querySelector('.main-nav').classList.toggle('active');
+    }
+    
+    // Mostrar solo el artículo seleccionado
+    function showArticle(articleId) {
+      // Ocultar todos los artículos
+      document.querySelectorAll('.article-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Mostrar el artículo seleccionado
+      document.getElementById(articleId).classList.add('active');
+      
+      // Actualizar enlace activo en el menú
+      document.querySelectorAll('.main-nav a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${articleId}`) {
+          link.classList.add('active');
+        }
+      });
+      
+      // Cerrar menú en móviles
+      if (window.innerWidth < 992) {
+        document.querySelector('.main-nav').classList.remove('active');
+      }
+      
+      // Scroll suave al inicio del artículo
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    
+    // Cerrar menú al hacer clic fuera en móviles
+    document.addEventListener('click', function(event) {
+      const nav = document.querySelector('.main-nav');
+      const toggle = document.querySelector('.menu-toggle');
+      
+      if (window.innerWidth < 992 && 
+          !nav.contains(event.target) && 
+          !toggle.contains(event.target) &&
+          nav.classList.contains('active')) {
+        nav.classList.remove('active');
+      }
+    });
+    
+    // Efecto hover en los cuadros de información
+    document.querySelectorAll('.info-box').forEach(box => {
+      box.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-5px)';
+      });
+      box.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+</body>
+</html>
